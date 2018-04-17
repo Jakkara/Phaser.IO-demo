@@ -29,7 +29,7 @@ var line = [];
 var wordIndex = 0;
 var lineIndex = 0;
 var wordDelay = 90;
-var lineDelay = 800;
+var lineDelay = 90;
 
 function create() {
     music = game.add.audio('bells');
@@ -37,26 +37,27 @@ function create() {
 }
 
 function createText(){
-    text = game.add.text(32, 32, '', {fill: "#19de65" });
-    text.font = 'VT323';
+    displayText = game.add.text(32, 32, '', {fill: "#19de65" });
+    displayText.font = 'VT323';
     game.time.events.add(2000, nextLine, this);
     loadingScreen();
 }
 
 function loadingScreen(){ 
-    text.fontSize = 60;
-    text.setText('Initiating...')
+    displayText.fontSize = 60;
+    displayText.setText('Initiating...')
 
 }
 
 function nextLine() {
     if (lineIndex == 0){
-        text.fontSize = 22;
-        text.setText('');
+        displayText.fontSize = 22;
+        displayText.setText('');
     }
     if (lineIndex === content.length){
         //  We're finished
-        game.add.tween(text).to( { alpha: 0 }, 2000, "Linear", true);
+        //TODO more delay here
+        game.add.tween(displayText).to( { alpha: 0 }, 4000, "Elastic", true);
         return;
     }
 
@@ -77,7 +78,7 @@ function nextLine() {
 function nextWord() {
 
     //  Add the next word onto the text string, followed by a space
-    text.text = text.text.concat(line[wordIndex] + " ");
+    displayText.text = displayText.text.concat(line[wordIndex] + " ");
 
     //  Advance the word index to the next word in the line
     wordIndex++;
@@ -86,10 +87,14 @@ function nextWord() {
     if (wordIndex === line.length)
     {
         //  Add a carriage return
-        text.text = text.text.concat("\n");
+        displayText.text = displayText.text.concat("\n");
 
         //  Get the next line after the lineDelay amount of ms has elapsed
         game.time.events.add(lineDelay, nextLine, this);
     }
+
+}
+
+function backspaceTransition() {
 
 }
